@@ -206,8 +206,12 @@ function connectToLanyard() {
     };
 }
 
-let lastActivity = JSON.parse(localStorage.getItem('lastActivity')) || null;
-let lastActivityTime = localStorage.getItem('lastActivityTime') || null;
+const currentPath = location.pathname.split('/')[1] || 'root';
+const lastActivityKey = `${currentPath}_lastActivity`;
+const lastActivityTimeKey = `${currentPath}_lastActivityTime`;
+
+let lastActivity = JSON.parse(localStorage.getItem(lastActivityKey)) || null;
+let lastActivityTime = localStorage.getItem(lastActivityTimeKey) || null;
 
 function updateDiscordStatus(data) {
     const usernameElement = document.getElementById('username');
@@ -243,6 +247,21 @@ function updateDiscordStatus(data) {
         };
         
         statusTextElement.textContent = statusText[data.discord_status] || 'Unknown';
+    }
+
+    const currentPath = window.location.pathname;
+    const lastActivityKey = currentPath.includes('qva') ? 'qva_lastActivity' : 'neptune_lastActivity';
+    const lastActivityTimeKey = currentPath.includes('qva') ? 'qva_lastActivityTime' : 'neptune_lastActivityTime';
+
+    const currentActivity = data.activities?.find(a => a.type !== 4 && a.name !== 'Spotify') || null;
+
+    const previousActivity = JSON.parse(localStorage.getItem(lastActivityKey));
+
+    const activityChanged = JSON.stringify(previousActivity) !== JSON.stringify(currentActivity);
+
+    if (activityChanged) {
+        localStorage.setItem(lastActivityKey, JSON.stringify(currentActivity));
+        localStorage.setItem(lastActivityTimeKey, new Date().toISOString());
     }
 
     if (data.activities && data.activities.length > 0) {
