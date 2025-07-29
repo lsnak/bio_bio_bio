@@ -120,7 +120,7 @@ function initLinkCopyFeature() {
             const type = link.getAttribute('data-type');
             
             if (type === 'Spotify') {
-                showCopyNotification('qva does not have Spotify.');
+                showCopyNotification('Neptune does not have Spotify.');
             } else {
                 navigator.clipboard.writeText(textToCopy).then(() => {
                     showCopyNotification(`${type} copied to clipboard`);
