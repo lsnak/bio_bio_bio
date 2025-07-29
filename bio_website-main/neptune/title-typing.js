@@ -1,4 +1,4 @@
-const fullText = "Welcome";
+const fullText = "Welcome..";
 const firstChar = fullText.charAt(0);
 const restText = fullText.slice(1);
 
